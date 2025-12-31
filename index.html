@@ -659,24 +659,107 @@
         const modalBio = document.getElementById('modalBio');
         const reposList = document.getElementById('reposList');
         
+        const githubCache = {
+            getAll: () => {
+                try {
+                    const cached = localStorage.getItem('githubData');
+                    return cached ? JSON.parse(cached) : {};
+                } catch (e) {
+                    console.warn('Failed to load GitHub cache', e);
+                    return {};
+                }
+            },
+            get: (key) => {
+                return githubCache.getAll()[key] || null;
+            },
+            set: (key, data) => {
+                const allData = githubCache.getAll();
+                allData[key] = data;
+                localStorage.setItem('githubData', JSON.stringify(allData));
+            },
+            clear: () => {
+                localStorage.removeItem('githubData');
+            }
+        };
+
+        async function fetchUserOrgs(username) {
+            if (!username) return [];
+            
+            const cacheKey = `orgs_${username}`;
+            const cached = githubCache.get(cacheKey);
+            if (cached) return cached;
+            
+            try {
+                const response = await fetch(`https://api.github.com/users/${username}/orgs`);
+                
+                if (response.status === 403) {
+                    console.warn('GitHub API rate limit exceeded');
+                    return [];
+                }
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch organizations: ${response.status} ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                githubCache.set(cacheKey, data);
+                return data;
+            } catch (error) {
+                console.error('Error fetching organizations:', error);
+                return [];
+            }
+        }
+
+
+        async function fetchUserPRsInOrg(username, orgName) {
+            const cacheKey = `prs_${username}_${orgName}`;
+            const cached = githubCache.get(cacheKey);
+            if (cached) return cached;
+            
+            try {
+                const response = await fetch(`https://api.github.com/search/issues?q=type:pr+author:${username}+org:${orgName}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch PRs for ${username} in ${orgName}: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const items = data.items || [];
+                githubCache.set(cacheKey, items);
+                return items;
+            } catch (error) {
+                console.error(`Error fetching PRs for ${username} in ${orgName}:`, error);
+                return [];
+            }
+        }
+
         async function fetchTopRepos(username) {
             if (!username) return [];
+            
+            const cacheKey = `user_repos_${username}`;
+            const cached = githubCache.get(cacheKey);
+            if (cached) return cached;
             
             try {
                 const response = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
                 
+                if (response.status === 403) {
+                    console.warn('GitHub API rate limit exceeded');
+                    return [];
+                }
+                
                 if (!response.ok) {
-                    throw new Error('Failed to fetch repositories');
+                    throw new Error(`Failed to fetch repositories: ${response.status} ${response.statusText}`);
                 }
                 
                 const repos = await response.json();
-                
-                const sortedRepos = repos
+                const filteredRepos = repos
                     .filter(repo => !repo.fork)
                     .sort((a, b) => b.stargazers_count - a.stargazers_count)
                     .slice(0, 5);
                 
-                return sortedRepos;
+                githubCache.set(cacheKey, filteredRepos);
+                return filteredRepos;
             } catch (error) {
                 console.error('Error fetching GitHub repos:', error);
                 return [];
@@ -698,31 +781,83 @@
             modal.classList.add('active');
             
             if (username) {
-                const repos = await fetchTopRepos(username);
+                const [repos, orgs] = await Promise.all([
+                    fetchTopRepos(username),
+                    fetchUserOrgs(username)
+                ]);
                 
-                if (repos.length > 0) {
+                let html = '';
+                
+                if (repos.length === 0 && orgs.length === 0) {
+                    const message = username 
+                        ? `No repositories found or GitHub API rate limit reached. Check back later or visit <a href="https://github.com/${username}" target="_blank" class="text-aqua-400 hover:underline">GitHub profile</a>.`
+                        : 'No GitHub username provided.';
+                    
                     reposList.innerHTML = `
-                        <h4 class="text-sm font-semibold text-zinc-400 mb-3">Top Repositories</h4>
-                        ${repos.map(repo => `
-                            <a href="${repo.html_url}" target="_blank" class="repo-item block group">
-                                <div class="font-medium text-white group-hover:text-aqua-400 transition-colors">${repo.name}</div>
-                                ${repo.description ? `<p class="text-xs text-zinc-400 mt-1">${repo.description}</p>` : ''}
-                                <div class="repo-stars">
-                                    <svg viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path>
-                                    </svg>
-                                    <span>${repo.stargazers_count}</span>
-                                </div>
-                            </a>
-                        `).join('')}
-                    `;
-                } else {
-                    reposList.innerHTML = '<div class="text-center py-4 text-zinc-400">No public repositories found.</div>';
+                        <div class="text-center py-4 text-zinc-400">
+                            ${message}
+                        </div>`;
+                    return;
                 }
+
+                if (repos.length > 0) {
+                    html += `
+                        <div class="mb-8">
+                            <h4 class="text-sm font-semibold text-zinc-400 mb-4">Personal Repositories</h4>
+                            <div class="grid grid-cols-1 gap-3">
+                                ${repos.map(repo => `
+                                    <a href="${repo.html_url}" target="_blank" class="repo-item block group">
+                                        <div class="font-medium text-white group-hover:text-aqua-400 transition-colors break-words">${repo.name}</div>
+                                        ${repo.description ? `<p class="text-xs text-zinc-400 mt-1 break-words">${repo.description}</p>` : ''}
+                                        <div class="flex items-center mt-1 text-xs" style="color: #71717A">
+                                            <i class="fas fa-star text-xs mr-1"></i>
+                                            <span>${repo.stargazers_count}</span>
+                                        </div>
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </div>`;
+                }
+
+                if (orgs.length > 0) {
+                    html += `
+                        <div class="mt-8 pt-6 border-t border-white/10">
+                            <h4 class="text-sm font-semibold text-zinc-400 mb-4">Organizations</h4>
+                            <div class="flex flex-wrap gap-3">
+                                ${orgs.map(org => `
+                                    <a href="https://github.com/${org.login}" target="_blank" class="flex items-center px-3 py-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
+                                        <img src="${org.avatar_url}" alt="${org.login}" class="w-5 h-5 rounded-full mr-2">
+                                        <span class="text-sm text-white">${org.login}</span>
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </div>`;
+                }
+
+                reposList.innerHTML = html || '<div class="text-center py-4 text-zinc-400">No repositories found.</div>';
             } else {
                 reposList.innerHTML = '<div class="text-center py-0 text-zinc-400"></div>';
             }
         }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const footer = document.querySelector('footer');
+            if (footer) {
+                const clearCacheBtn = document.createElement('button');
+                clearCacheBtn.textContent = 'Clear GitHub Cache';
+                clearCacheBtn.className = 'text-xs text-zinc-500 hover:text-aqua-400 ml-4';
+                clearCacheBtn.onclick = (e) => {
+                    e.preventDefault();
+                    githubCache.clear();
+                    clearCacheBtn.textContent = 'Cache cleared!';
+                    setTimeout(() => {
+                        clearCacheBtn.textContent = 'Clear GitHub Cache';
+                    }, 2000);
+                };
+                footer.querySelector('div').appendChild(document.createTextNode(' • '));
+                footer.querySelector('div').appendChild(clearCacheBtn);
+            }
+        });
         
         function closeMemberModal() {
             modal.classList.remove('active');
