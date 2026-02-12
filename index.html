@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Akua Tech is a global engineering collective building scalable systems, high-performance software, and next-gen infrastructure.">
     <title>Akua Tech | Global Engineering Collective</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,102 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <div id="githubModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 opacity-0 invisible transition-opacity duration-300">
-        <div class="bg-surface-100 border border-white/10 rounded-2xl p-6 max-w-md w-full mx-4 relative transform transition-all duration-300 scale-95 opacity-0 max-h-[80vh] overflow-y-auto">
-            <button id="closeModal" class="absolute top-4 right-4 text-zinc-400 hover:text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <div class="text-center">
-                <h3 id="modalTitle" class="text-xl font-bold text-white mb-2"></h3>
-                <p id="modalRole" class="text-sm text-aqua-400 mb-6"></p>
-                <p id="modalBio" class="text-sm text-zinc-300 mb-6 hidden"></p>
-                <div id="reposList" class="space-y-3 text-left">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <style>
-        #githubModal {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        #githubModal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        #githubModal .scale-95 {
-            transform: scale(0.95);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            max-height: 80vh;
-            overflow-y: auto;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        #githubModal .scale-95::-webkit-scrollbar {
-            display: none;
-        }
-        #githubModal.active .scale-95 {
-            transform: scale(1);
-            opacity: 1;
-        }
-        .repo-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            transition: all 0.2s ease;
-        }
-        .repo-item:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(34, 211, 238, 0.2);
-        }
-        .repo-stars {
-            display: flex;
-            align-items: center;
-            font-size: 0.75rem;
-            color: #a1a1aa;
-            margin-top: 0.25rem;
-        }
-        .repo-stars svg {
-            width: 0.875rem;
-            height: 0.875rem;
-            margin-right: 0.25rem;
-            fill: #fbbf24;
-        }
-        .member-card {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .view-button {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -40px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            color: white;
-            padding: 8px 0;
-            text-align: center;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-        .member-card:hover .view-button {
-            bottom: 0;
-        }
-    </style>
-
     <script>
         tailwind.config = {
             theme: {
@@ -127,9 +34,10 @@
                     },
                     animation: {
                         'blob': 'blob 10s infinite',
-                        'scroll': 'scroll 20s linear infinite',
+                        'scroll': 'scroll 40s linear infinite',
                         'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
                         'spin-slow': 'spin 8s linear infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
                     },
                     keyframes: {
                         blob: {
@@ -145,6 +53,10 @@
                         fadeInUp: {
                             '0%': { opacity: '0', transform: 'translateY(20px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-1000px 0' },
+                            '100%': { backgroundPosition: '1000px 0' }
                         }
                     }
                 }
@@ -199,14 +111,121 @@
             background: linear-gradient(135deg, #fff 30%, #22d3ee 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: gradient-move 5s ease infinite;
+        }
+        
+        @keyframes gradient-move {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         
         .marquee-mask {
             mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
+
+        /* Modal Styles */
+        #githubModal {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #githubModal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        #githubModal .scale-95 {
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        #githubModal .scale-95::-webkit-scrollbar {
+            display: none;
+        }
+        #githubModal.active .scale-95 {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .repo-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            transition: all 0.2s ease;
+        }
+        .repo-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(34, 211, 238, 0.2);
+        }
+        .member-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .view-button {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -40px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 12px 0;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .member-card:hover .view-button {
+            bottom: 0;
+        }
+
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+        #mobile-menu.open {
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-aqua-400 selection:text-black">
+
+    <!-- Modal moved to body -->
+    <div id="githubModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 invisible transition-opacity duration-300">
+        <div class="bg-surface-100 border border-white/10 rounded-2xl p-6 max-w-md w-full mx-4 relative transform transition-all duration-300 scale-95 opacity-0 max-h-[80vh] overflow-y-auto shadow-2xl shadow-aqua-500/10">
+            <button id="closeModal" class="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <div class="text-center pt-2">
+                <h3 id="modalTitle" class="text-2xl font-bold text-white mb-1"></h3>
+                <p id="modalRole" class="text-sm text-aqua-400 mb-6 font-medium uppercase tracking-wide"></p>
+                <p id="modalBio" class="text-sm text-zinc-300 mb-6 hidden leading-relaxed"></p>
+                <div id="reposList" class="space-y-3 text-left">
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="aurora-bg">
         <div class="orb orb-1"></div>
@@ -216,7 +235,8 @@
     
     <div class="fixed inset-0 opacity-[0.03] pointer-events-none z-50 mix-blend-overlay" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E');"></div>
 
-    <nav class="fixed w-full z-40 top-0 start-0 border-b border-white/5 bg-black/50 backdrop-blur-xl">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 start-0 border-b border-white/5 bg-black/50 backdrop-blur-xl">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 md:px-8">
             <a href="#" class="flex items-center space-x-2 rtl:space-x-reverse group">
                 <div class="relative w-8 h-8 flex items-center justify-center">
@@ -225,62 +245,123 @@
                 </div>
                 <span class="self-center text-xl font-bold tracking-tight text-white group-hover:text-aqua-400 transition-colors">Akua Tech</span>
             </a>
-            <div class="flex items-center gap-4 md:order-2">
-                <a href="https://t.me/+uVW4wH-v1VpjNzQ9" target="_blank" class="hidden md:flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors group">
-                    <span class="rounded-full bg-white/10 px-0.5 flex items-center justify-center group-hover:bg-cyan-700 transition-colors">
-                        <i class="fab fa-telegram text-white text-xl"></i>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-white hover:text-aqua-400 focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-6">
+                <a href="#who-we-are" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors">Who We Are</a>
+                <a href="#services" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors">Services</a>
+                <a href="#meet-the-team" class="text-sm font-medium text-zinc-400 hover:text-white transition-colors">Team</a>
+                
+                <div class="h-4 w-px bg-white/10 mx-2"></div>
+
+                <a href="https://t.me/+uVW4wH-v1VpjNzQ9" target="_blank" class="flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors group">
+                    <span class="rounded-full bg-white/10 w-6 h-6 flex items-center justify-center group-hover:bg-cyan-700 transition-colors">
+                        <i class="fab fa-telegram-plane text-white text-xs"></i>
                     </span>
                     Contribute
                 </a>
                 
-                <a href="#contact" class="relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-aqua-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-                    <span class="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]"></span>
+                <a href="#contact" class="relative inline-flex h-9 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-aqua-400 focus:ring-offset-2 focus:ring-offset-slate-50 group">
+                    <span class="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)] opacity-70 group-hover:opacity-100 transition-opacity"></span>
                     <span class="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-5 py-1 text-sm font-medium text-white backdrop-blur-3xl transition hover:bg-slate-950/80">
                       Work with us
                     </span>
                 </a>
             </div>
         </div>
+        
+        <!-- Mobile Slide-out Menu -->
+        <div id="mobile-menu" class="fixed inset-y-0 right-0 w-64 bg-zinc-950 border-l border-white/10 shadow-2xl p-6 md:hidden z-50 flex flex-col gap-6">
+            <div class="flex justify-end">
+                <button id="close-mobile-menu" class="text-zinc-400 hover:text-white">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <nav class="flex flex-col gap-4">
+                <a href="#who-we-are" class="text-lg font-medium text-zinc-300 hover:text-aqua-400">Who We Are</a>
+                <a href="#services" class="text-lg font-medium text-zinc-300 hover:text-aqua-400">Services</a>
+                <a href="#meet-the-team" class="text-lg font-medium text-zinc-300 hover:text-aqua-400">Team</a>
+                <a href="https://t.me/+uVW4wH-v1VpjNzQ9" target="_blank" class="text-lg font-medium text-zinc-300 hover:text-aqua-400 flex items-center gap-2">
+                    <i class="fab fa-telegram"></i> Contribute
+                </a>
+                <a href="#contact" class="px-5 py-3 bg-aqua-500/10 border border-aqua-500/20 rounded-full text-aqua-400 font-bold text-center mt-4">
+                    Work with us
+                </a>
+            </nav>
+        </div>
+        <!-- Mobile menu overlay -->
+        <div id="mobile-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden md:hidden"></div>
     </nav>
 
-    <section class="relative min-h-screen flex items-center justify-center pt-20">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Floating Elements Parallax -->
+        <div class="absolute top-1/4 left-10 w-24 h-24 bg-aqua-500/10 rounded-full blur-3xl animate-pulse delay-700"></div>
+        <div class="absolute bottom-1/4 right-10 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+
         <div class="w-full max-w-screen-xl mx-auto px-6 text-center z-10">
-            <div class="inline-flex items-center gap-2 px-1 pr-3 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-zinc-400 mb-8">
-                <span class="bg-aqua-400 text-gray-900 px-2 py-0.5 rounded-full font-bold">Q4</span>
-                Now accepting applications for Q1 2026
+            <div class="inline-flex items-center gap-3 px-1.5 pr-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs text-zinc-400 mb-10 hover:border-aqua-500/30 transition-colors animate-on-scroll">
+                <span class="bg-gradient-to-r from-aqua-400 to-cyan-600 text-black px-2.5 py-0.5 rounded-full font-bold shadow-[0_0_10px_rgba(34,211,238,0.4)]">Q4</span>
+                <span class="tracking-wide">Now accepting applications for Q1 2026</span>
             </div>
 
-            <h1 class="text-5xl md:text-8xl font-black tracking-tighter text-white mb-6 leading-[0.9]">
-                Realize <br> <span class="text-gradient">The Impossible.</span>
+            <h1 class="text-5xl md:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.95] animate-on-scroll" style="transition-delay: 100ms">
+                Realize <br> <span class="text-gradient relative inline-block">The Impossible.</span>
             </h1>
 
-            <p class="text-zinc-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-10">
+            <p class="text-zinc-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-12 font-light animate-on-scroll" style="transition-delay: 200ms">
                 Akua Tech is a collective of world-class engineers building scalable systems, high-performance software, and next-gen infrastructure for startups and global enterprises.
             </p>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:scale-105 transition-transform">Start a Project</a>
-                <a href="#meet-the-team" class="w-full sm:w-auto px-8 py-4 border border-white/20 text-white rounded-full font-bold text-lg hover:bg-white/5 transition-colors">Meet the Team</a>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-5 animate-on-scroll" style="transition-delay: 300ms">
+                <a href="#contact" class="group relative w-full sm:w-auto px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.4)]">
+                    <span class="relative z-10">Start a Project</span>
+                    <div class="absolute inset-0 rounded-full bg-gradient-to-r from-white to-zinc-200 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </a>
+                <a href="#meet-the-team" class="w-full sm:w-auto px-8 py-4 border border-white/20 text-white rounded-full font-bold text-lg hover:bg-white/5 transition-colors backdrop-blur-sm">Meet the Team</a>
             </div>
 
-            <div class="mt-24 marquee-mask overflow-hidden py-4 border-y border-white/5">
-                <div class="flex animate-scroll whitespace-nowrap gap-12 text-zinc-600 font-bold text-xl uppercase tracking-widest">
-                    <span>Rust</span><span>Golang</span><span>Kubernetes</span><span>Terraform</span><span>React</span><span>AWS</span><span>TypeScript</span><span>Docker</span><span>Next.js</span>
-                    <span>Rust</span><span>Golang</span><span>Kubernetes</span><span>Terraform</span><span>React</span><span>AWS</span><span>TypeScript</span><span>Docker</span><span>Next.js</span>
+            <div class="mt-32 marquee-mask overflow-hidden py-6 border-y border-white/5 bg-black/20 backdrop-blur-sm">
+                <div class="flex animate-scroll whitespace-nowrap gap-16 text-zinc-500 font-bold text-2xl uppercase tracking-widest items-center">
+                    <span>Rust</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>Golang</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>Kubernetes</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>Terraform</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>React</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>AWS</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>TypeScript</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>Docker</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>Next.js</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <!-- Duplicate for infinite scroll -->
+                    <span>Rust</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>Golang</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>Kubernetes</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>Terraform</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>React</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>AWS</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>TypeScript</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>Docker</span><i class="fas fa-circle text-[4px] text-zinc-700"></i>
+                    <span>Next.js</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="who-we-are" class="py-16 md:py-24 relative">
+    <!-- Who We Are Section -->
+    <section id="who-we-are" class="py-24 relative">
         <div class="max-w-screen-xl mx-auto px-4 md:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-                <div class="space-y-8">
-                    <h2 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+                <div class="space-y-10 animate-on-scroll">
+                    <h2 class="text-4xl md:text-7xl font-bold tracking-tight leading-[1.1]">
                         Not an agency. <br> 
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 to-zinc-700">A dedicated force.</span>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 via-zinc-200 to-zinc-600">A dedicated force.</span>
                     </h2>
-                    <div class="space-y-6 text-lg md:text-xl text-zinc-400 leading-relaxed font-light">
+                    <div class="space-y-8 text-lg md:text-xl text-zinc-400 leading-relaxed font-light border-l-2 border-white/10 pl-6">
                         <p>
                             Traditional agencies sell hours. We sell <strong class="text-aqua-400 font-semibold">velocity</strong>. 
                         </p>
@@ -291,22 +372,45 @@
                 </div>
 
                 <div class="relative md:perspective-1000">
-                    <div class="grid grid-cols-2 gap-4 md:transform md:rotate-y-12">
-                        <div class="glass-card p-6 md:p-8 rounded-2xl bg-gradient-to-b from-white/5 to-transparent md:-mb-5">
-                            <div class="text-3xl md:text-5xl font-bold text-white mb-2 tracking-tighter">50+</div>
-                            <div class="text-xs md:text-sm text-zinc-400 font-medium uppercase tracking-wider">Open Source Repos</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-6 md:transform md:rotate-y-12">
+                        <!-- Stat Card 1 -->
+                        <div class="glass-card p-8 rounded-3xl bg-gradient-to-b from-white/5 to-transparent md:-translate-y-8 animate-on-scroll hover:border-aqua-500/30 transition-colors group">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="text-xs font-mono text-zinc-500 border border-white/10 px-2 py-1 rounded">01</div>
+                                <i class="fas fa-code-branch text-zinc-600 group-hover:text-aqua-400 transition-colors"></i>
+                            </div>
+                            <div class="text-5xl font-bold text-white mb-2 tracking-tighter">50+</div>
+                            <div class="text-sm text-zinc-400 font-medium uppercase tracking-wider">Open Source Repos</div>
                         </div>
-                        <div class="glass-card p-6 md:p-8 rounded-2xl bg-gradient-to-b from-white/5 to-transparent md:mb-5">
-                            <div class="text-3xl md:text-5xl font-bold text-white mb-2 tracking-tighter">12</div>
-                            <div class="text-xs md:text-sm text-zinc-400 font-medium uppercase tracking-wider">Unicorns Scaled</div>
+
+                        <!-- Stat Card 2 -->
+                        <div class="glass-card p-8 rounded-3xl bg-gradient-to-b from-white/5 to-transparent md:translate-y-8 animate-on-scroll" style="transition-delay: 100ms">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="text-xs font-mono text-zinc-500 border border-white/10 px-2 py-1 rounded">02</div>
+                                <i class="fas fa-rocket text-zinc-600 group-hover:text-purple-400 transition-colors"></i>
+                            </div>
+                            <div class="text-5xl font-bold text-white mb-2 tracking-tighter">12</div>
+                            <div class="text-sm text-zinc-400 font-medium uppercase tracking-wider">Unicorns Scaled</div>
                         </div>
-                        <div class="glass-card p-6 md:p-8 rounded-2xl bg-gradient-to-b from-white/5 to-transparent md:mt-5">
-                            <div class="text-3xl md:text-5xl font-bold text-white mb-2 tracking-tighter">100%</div>
-                            <div class="text-xs md:text-sm text-zinc-400 font-medium uppercase tracking-wider">Remote Native</div>
+
+                        <!-- Stat Card 3 -->
+                        <div class="glass-card p-8 rounded-3xl bg-gradient-to-b from-white/5 to-transparent md:-translate-y-2 animate-on-scroll" style="transition-delay: 200ms">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="text-xs font-mono text-zinc-500 border border-white/10 px-2 py-1 rounded">03</div>
+                                <i class="fas fa-globe text-zinc-600 group-hover:text-emerald-400 transition-colors"></i>
+                            </div>
+                            <div class="text-5xl font-bold text-white mb-2 tracking-tighter">100%</div>
+                            <div class="text-sm text-zinc-400 font-medium uppercase tracking-wider">Remote Native</div>
                         </div>
-                        <div class="glass-card p-6 md:p-8 rounded-2xl bg-gradient-to-b from-white/5 to-transparent md:-mt-5">
-                            <div class="text-3xl md:text-5xl font-bold text-white mb-2 tracking-tighter">24/7</div>
-                            <div class="text-xs md:text-sm text-zinc-400 font-medium uppercase tracking-wider">Global Coverage</div>
+
+                        <!-- Stat Card 4 -->
+                        <div class="glass-card p-8 rounded-3xl bg-gradient-to-b from-white/5 to-transparent md:translate-y-14 animate-on-scroll" style="transition-delay: 300ms">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="text-xs font-mono text-zinc-500 border border-white/10 px-2 py-1 rounded">04</div>
+                                <i class="fas fa-clock text-zinc-600 group-hover:text-amber-400 transition-colors"></i>
+                            </div>
+                            <div class="text-5xl font-bold text-white mb-2 tracking-tighter">24/7</div>
+                            <div class="text-sm text-zinc-400 font-medium uppercase tracking-wider">Global Coverage</div>
                         </div>
                     </div>
                 </div>
@@ -314,58 +418,66 @@
         </div>
     </section>
 
-    <section class="py-24 bg-zinc-900/20 border-y border-white/5 backdrop-blur-sm">
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-zinc-900/20 border-y border-white/5 backdrop-blur-sm">
         <div class="max-w-screen-xl mx-auto px-4 md:px-8">
-            <div class="text-center mb-16">
-                <span class="text-aqua-400 font-bold tracking-widest text-xs uppercase mb-2 block">Services</span>
-                <h2 class="text-3xl md:text-5xl font-bold text-white">How we engage</h2>
+            <div class="text-center mb-20 animate-on-scroll">
+                <span class="text-aqua-400 font-bold tracking-widest text-xs uppercase mb-3 block">Engagement Models</span>
+                <h2 class="text-4xl md:text-6xl font-bold text-white">How we engage</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- MVP Sprint Card -->
-                <div class="group h-full flex flex-col p-8 rounded-3xl border border-white/10 bg-gradient-to-b from-black/50 to-black/80 hover:border-aqua-400/30 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+                <div class="group h-full flex flex-col p-10 rounded-3xl border border-white/10 bg-gradient-to-b from-black/50 to-black/80 hover:border-aqua-400/30 transition-all duration-300 hover:-translate-y-2 relative overflow-hidden animate-on-scroll">
                     <div class="absolute inset-0 bg-gradient-to-br from-aqua-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="relative z-10">
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="w-12 h-12 rounded-xl bg-zinc-800/50 flex items-center justify-center mb-6 text-white group-hover:bg-aqua-500/20 group-hover:text-aqua-400 transition-colors">
+                            <i class="fas fa-bolt text-xl"></i>
+                        </div>
                         <h3 class="text-2xl font-bold text-white mb-4">The MVP Sprint</h3>
-                        <p class="text-zinc-300 text-sm leading-relaxed mb-6">
-                            0 to 1 in 4-8 weeks. We architect and build your core product using scalable patterns from day one. You get a production-ready application, not a prototype.
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-8 flex-grow">
+                            0 to 1 in 4-8 weeks. We architect and build your core product using scalable patterns from day one. You get a production-ready application.
                         </p>
-                        <div class="mt-auto space-y-3 pt-4 border-t border-white/5">
+                        <div class="space-y-4 pt-6 border-t border-white/5">
                             <div class="flex items-center text-sm text-zinc-300">
-                                <div class="w-2 h-2 rounded-full bg-aqua-500 mr-3"></div>
+                                <i class="fas fa-check text-aqua-500 mr-3 text-xs"></i>
                                 <span>Full-Stack Development</span>
                             </div>
                             <div class="flex items-center text-sm text-zinc-300">
-                                <div class="w-2 h-2 rounded-full bg-aqua-500 mr-3"></div>
+                                <i class="fas fa-check text-aqua-500 mr-3 text-xs"></i>
                                 <span>CI/CD Setup</span>
                             </div>
                             <div class="flex items-center text-sm text-zinc-300">
-                                <div class="w-2 h-2 rounded-full bg-aqua-500 mr-3"></div>
+                                <i class="fas fa-check text-aqua-500 mr-3 text-xs"></i>
                                 <span>Documentation</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Scale-Up Engineering Card -->
-                <div class="group h-full flex flex-col p-8 rounded-3xl border border-aqua-400/30 bg-gradient-to-b from-aqua-500/5 to-black/80 relative overflow-hidden hover:-translate-y-1 transition-all duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-br from-aqua-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="relative z-10">
+                <!-- Scale-Up Engineering Card (Featured) -->
+                <div class="group h-full flex flex-col p-10 rounded-3xl border border-aqua-400/40 bg-gradient-to-b from-aqua-900/10 to-black/90 relative overflow-hidden transform md:-translate-y-4 shadow-2xl shadow-aqua-900/20 animate-on-scroll" style="transition-delay: 150ms">
+                    <div class="absolute top-0 right-0 bg-aqua-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">Most Popular</div>
+                    <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="w-12 h-12 rounded-xl bg-aqua-500/20 flex items-center justify-center mb-6 text-aqua-400 border border-aqua-500/20">
+                            <i class="fas fa-chart-line text-xl"></i>
+                        </div>
                         <h3 class="text-2xl font-bold text-white mb-4">Scale-Up Engineering</h3>
-                        <p class="text-zinc-300 text-sm leading-relaxed mb-6">
+                        <p class="text-zinc-300 text-sm leading-relaxed mb-8 flex-grow">
                             Preparing for Series A/B or high-traffic events. We refactor bottlenecks, optimize databases, and implement robust caching strategies.
                         </p>
-                        <div class="space-y-3 pt-4 border-t border-white/5">
-                            <div class="flex items-center text-sm text-zinc-300">
-                                <div class="w-2 h-2 rounded-full bg-aqua-500 mr-3"></div>
+                        <div class="space-y-4 pt-6 border-t border-white/10">
+                            <div class="flex items-center text-sm text-white">
+                                <i class="fas fa-check text-aqua-400 mr-3 text-xs"></i>
                                 <span>Performance Audits</span>
                             </div>
-                            <div class="flex items-center text-sm text-zinc-300">
-                                <div class="w-2 h-2 rounded-full bg-aqua-500 mr-3"></div>
+                            <div class="flex items-center text-sm text-white">
+                                <i class="fas fa-check text-aqua-400 mr-3 text-xs"></i>
                                 <span>Kubernetes Migration</span>
                             </div>
-                            <div class="flex items-center text-sm text-zinc-300">
-                                <div class="w-2 h-2 rounded-full bg-aqua-500 mr-3"></div>
+                            <div class="flex items-center text-sm text-white">
+                                <i class="fas fa-check text-aqua-400 mr-3 text-xs"></i>
                                 <span>Database Optimization</span>
                             </div>
                         </div>
@@ -373,23 +485,29 @@
                 </div>
 
                 <!-- Security & Infrastructure Card -->
-                <div class="group h-full flex flex-col p-8 rounded-3xl border border-white/10 bg-gradient-to-b from-black/50 to-black/80 hover:border-purple-400/50 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
-                    <h3 class="text-2xl font-bold text-white mb-4">Security & Infrastructure</h3>
-                    <p class="text-zinc-300 text-sm leading-relaxed mb-6">
-                        Hardening your systems against attacks. We perform penetration testing, infrastructure audits, and implement zero-trust architectures.
-                    </p>
-                    <div class="mt-auto space-y-3 pt-4 border-t border-white/5">
-                        <div class="flex items-center text-sm text-zinc-300">
-                            <div class="w-2 h-2 rounded-full bg-purple-500 mr-3"></div>
-                            <span>Penetration Testing</span>
+                <div class="group h-full flex flex-col p-10 rounded-3xl border border-white/10 bg-gradient-to-b from-black/50 to-black/80 hover:border-purple-400/30 transition-all duration-300 hover:-translate-y-2 relative overflow-hidden animate-on-scroll" style="transition-delay: 300ms">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="w-12 h-12 rounded-xl bg-zinc-800/50 flex items-center justify-center mb-6 text-white group-hover:bg-purple-500/20 group-hover:text-purple-400 transition-colors">
+                            <i class="fas fa-shield-alt text-xl"></i>
                         </div>
-                        <div class="flex items-center text-sm text-zinc-300">
-                            <div class="w-2 h-2 rounded-full bg-purple-500 mr-3"></div>
-                            <span>Cloud Security Posture</span>
-                        </div>
-                        <div class="flex items-center text-sm text-zinc-300">
-                            <div class="w-2 h-2 rounded-full bg-purple-500 mr-3"></div>
-                            <span>Compliance Prep</span>
+                        <h3 class="text-2xl font-bold text-white mb-4">Security & Infrastructure</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-8 flex-grow">
+                            Hardening your systems against attacks. We perform penetration testing, infrastructure audits, and implement zero-trust architectures.
+                        </p>
+                        <div class="space-y-4 pt-6 border-t border-white/5">
+                            <div class="flex items-center text-sm text-zinc-300">
+                                <i class="fas fa-check text-purple-500 mr-3 text-xs"></i>
+                                <span>Penetration Testing</span>
+                            </div>
+                            <div class="flex items-center text-sm text-zinc-300">
+                                <i class="fas fa-check text-purple-500 mr-3 text-xs"></i>
+                                <span>Cloud Security Posture</span>
+                            </div>
+                            <div class="flex items-center text-sm text-zinc-300">
+                                <i class="fas fa-check text-purple-500 mr-3 text-xs"></i>
+                                <span>Compliance Prep</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -397,84 +515,102 @@
         </div>
     </section>
 
-    <section class="py-16 md:py-24 border-y border-white/5 bg-zinc-900/30">
+    <!-- Built Different Section -->
+    <section class="py-24 border-y border-white/5 bg-zinc-900/30">
         <div class="max-w-screen-xl mx-auto px-4 md:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold text-white">Built Different</h2>
-                <p class="mt-4 text-zinc-400">A culture defined by technical excellence.</p>
+            <div class="text-center mb-20 animate-on-scroll">
+                <h2 class="text-4xl md:text-6xl font-bold text-white">Built Different</h2>
+                <p class="mt-4 text-zinc-400 text-lg">A culture defined by technical excellence.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
-                <div>
-                    <h4 class="text-lg font-bold text-white mb-3">Open Source DNA</h4>
-                    <p class="text-zinc-400 leading-relaxed">We don't just use libraries; we contribute to them. Our engineers are active maintainers in the open-source ecosystem.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 rounded-2xl hover:bg-white/5 transition-colors animate-on-scroll">
+                    <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 mb-6">
+                        <i class="fab fa-github text-xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">Open Source DNA</h4>
+                    <p class="text-zinc-400 leading-relaxed text-sm">We don't just use libraries; we contribute to them. Our engineers are active maintainers in the open-source ecosystem.</p>
                 </div>
-                <div>
-                    <h4 class="text-lg font-bold text-white mb-3">No Middlemen</h4>
-                    <p class="text-zinc-400 leading-relaxed">You talk directly to the engineers building your product. No account managers, no game of telephone. Just pure signal.</p>
+                
+                <div class="glass-card p-8 rounded-2xl hover:bg-white/5 transition-colors animate-on-scroll" style="transition-delay: 150ms">
+                    <div class="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-400 mb-6">
+                        <i class="fas fa-handshake text-xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">No Middlemen</h4>
+                    <p class="text-zinc-400 leading-relaxed text-sm">You talk directly to the engineers building your product. No account managers, no game of telephone. Just pure signal.</p>
                 </div>
-                <div>
-                    <h4 class="text-lg font-bold text-white mb-3">Future-Proof</h4>
-                    <p class="text-zinc-400 leading-relaxed">We bet on technologies that last. Minimal technical debt, maximum scalability, and clean, documented code.</p>
+                
+                <div class="glass-card p-8 rounded-2xl hover:bg-white/5 transition-colors animate-on-scroll" style="transition-delay: 300ms">
+                    <div class="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center text-pink-400 mb-6">
+                        <i class="fas fa-infinity text-xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">Future-Proof</h4>
+                    <p class="text-zinc-400 leading-relaxed text-sm">We bet on technologies that last. Minimal technical debt, maximum scalability, and clean, documented code.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-12 md:py-24">
+    <!-- Capabilities Bento Grid -->
+    <section class="py-24">
         <div class="max-w-screen-xl mx-auto px-4 md:px-8">
-            <div class="mb-12 md:mb-20 w-full md:w-2/3">
-                <span class="text-aqua-400 font-bold tracking-widest text-xs uppercase mb-2 block">Capabilities</span>
-                <h2 class="text-3xl md:text-6xl font-bold tracking-tight text-white">Core Competencies.</h2>
+            <div class="mb-16 md:mb-20 w-full md:w-2/3 animate-on-scroll">
+                <span class="text-aqua-400 font-bold tracking-widest text-xs uppercase mb-3 block">Capabilities</span>
+                <h2 class="text-4xl md:text-7xl font-bold tracking-tight text-white">Core Competencies.</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="glass-card col-span-1 md:col-span-2 p-6 md:p-10 rounded-2xl md:rounded-[2rem] relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 w-48 md:w-64 h-48 md:h-64 bg-aqua-500/20 blur-[80px] md:blur-[100px] group-hover:bg-aqua-500/30 transition-all duration-500"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(300px,auto)]">
+                <!-- Card 1: Full Stack -->
+                <div class="glass-card col-span-1 md:col-span-2 p-8 md:p-12 rounded-[2.5rem] relative overflow-hidden group animate-on-scroll">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-aqua-500/20 blur-[100px] group-hover:bg-aqua-500/30 transition-all duration-500"></div>
                     <div class="relative z-10">
-                        <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-aqua-500/20 flex items-center justify-center mb-6 md:mb-8 text-aqua-400 border border-aqua-500/20">
-                            <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        <div class="w-14 h-14 rounded-2xl bg-aqua-500/20 flex items-center justify-center mb-8 text-aqua-400 border border-aqua-500/20 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-layer-group text-2xl"></i>
                         </div>
-                        <h3 class="text-2xl md:text-3xl font-bold text-white mb-3 md:mb-4">Full-Stack Architecture</h3>
-                        <p class="text-zinc-400 text-base md:text-lg leading-relaxed">
+                        <h3 class="text-3xl font-bold text-white mb-4">Full-Stack Architecture</h3>
+                        <p class="text-zinc-400 text-lg leading-relaxed max-w-xl">
                             We don't just ship features; we ship reliability. From complex React frontends to distributed Node/Go backends, we build systems that can handle millions of requests.
                         </p>
                     </div>
                 </div>
 
-                <div class="glass-card col-span-1 md:row-span-2 p-10 rounded-[2rem] relative overflow-hidden group flex flex-col">
+                <!-- Card 2: Systems (Tall) -->
+                <div class="glass-card col-span-1 md:row-span-2 p-8 md:p-10 rounded-[2.5rem] relative overflow-hidden group flex flex-col animate-on-scroll" style="transition-delay: 150ms">
                     <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black/80 z-0"></div>
                     <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 z-0 mix-blend-overlay"></div>
                     
-                    <div class="relative z-10 h-full flex flex-col justify-between">
-                        <div>
-                            <div class="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6 text-purple-400 border border-purple-500/20">
-                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                            </div>
-                            <h3 class="text-2xl font-bold text-white mb-2">Systems & Low Level</h3>
+                    <div class="relative z-10 h-full flex flex-col">
+                        <div class="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-8 text-purple-400 border border-purple-500/20 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-microchip text-2xl"></i>
                         </div>
-                        <p class="text-zinc-400 mt-4">
-                            When performance is non negotiable, we drop down to Rust, C++, and Go to squeeze every bit of efficiency from the hardware. We build custom protocols, high frequency engines, and optimized microservices that are designed to run close to the metal and scale with confidence. Our teams focus on predictable latency, efficient memory use, and safe concurrency to deliver systems that stay fast under pressure. From real time data processing to low overhead networking, every component is measured, tuned, and validated against strict performance goals. The result is reliable software that maximizes throughput, minimizes waste, and fully leverages modern CPUs and operating systems.
+                        <h3 class="text-2xl font-bold text-white mb-4">Systems & Low Level</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-6">
+                            When performance is non-negotiable, we drop down to Rust, C++, and Go to squeeze every bit of efficiency from the hardware. 
+                        </p>
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                             We build custom protocols, high-frequency engines, and optimized microservices designed to run close to the metal.
                         </p>
                     </div>
                 </div>
 
-                <div class="glass-card col-span-1 p-10 rounded-[2rem] relative overflow-hidden group">
+                <!-- Card 3: DevOps -->
+                <div class="glass-card col-span-1 p-8 md:p-10 rounded-[2.5rem] relative overflow-hidden group animate-on-scroll" style="transition-delay: 300ms">
                     <div class="relative z-10">
-                        <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400 border border-indigo-500/20">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 01-2 2v4a2 2 0 012 2h14a2 2 0 012-2v-4a2 2 0 01-2-2m-2-4h.01M17 16h.01"></path></svg>
+                        <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400 border border-indigo-500/20 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-server text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">DevOps & Infra</h3>
+                        <h3 class="text-xl font-bold text-white mb-3">DevOps & Infra</h3>
                         <p class="text-zinc-400 text-sm">Self-healing clusters, GitOps pipelines, and infrastructure that sleeps at night so you can too.</p>
                     </div>
                 </div>
 
-                <div class="glass-card col-span-1 p-10 rounded-[2rem] relative overflow-hidden group">
+                <!-- Card 4: Internal Tools -->
+                <div class="glass-card col-span-1 p-8 md:p-10 rounded-[2.5rem] relative overflow-hidden group animate-on-scroll" style="transition-delay: 450ms">
                     <div class="relative z-10">
-                        <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 flex items-center justify-center mb-6 text-emerald-400 border border-emerald-500/20">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 flex items-center justify-center mb-6 text-emerald-400 border border-emerald-500/20 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-tools text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">Internal Tools</h3>
+                        <h3 class="text-xl font-bold text-white mb-3">Internal Tools</h3>
                         <p class="text-zinc-400 text-sm">Custom dashboards, admin panels, and CLI tools that accelerate your internal team's velocity.</p>
                     </div>
                 </div>
@@ -482,176 +618,199 @@
         </div>
     </section>
 
+    <!-- Team Section -->
     <section id="meet-the-team" class="py-24 bg-black/40">
         <div class="max-w-screen-xl mx-auto px-4 md:px-8">
-            <div class="text-center mb-20">
+            <div class="text-center mb-24 animate-on-scroll">
                 <h2 class="text-4xl md:text-6xl font-bold text-white">The Collective</h2>
                 <p class="mt-4 text-zinc-400 text-lg">Distributed by design. United by code.</p>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
                 <!-- Primalkz -->
-                <div class="glass-card p-4 rounded-2xl text-center group relative overflow-hidden member-card" 
+                <div class="glass-card p-6 pb-16 rounded-2xl text-center group relative overflow-hidden member-card animate-on-scroll h-full hover:shadow-[0_0_20px_rgba(34,211,238,0.15)] hover:border-aqua-500/30" 
                      data-github="primalkz" 
                      data-role="Founder & Fullstack Engineer"
                      data-bio="Fullstack engineer with 2+ years of corporate experience. Linux enthusiast passionate about building efficient systems and solving complex problems. Enjoys working across the stack to create seamless user experiences.">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-aqua-500/10 border border-aqua-500/30 flex items-center justify-center text-xl font-bold text-aqua-400 group-hover:scale-110 transition-transform">P</div>
-                    <h4 class="text-base font-bold text-white relative z-10">primalkz</h4>
-                    <p class="text-xs text-aqua-400/80 uppercase tracking-wide font-medium relative z-10 mb-2">Founder</p>
-                    <button class="view-button text-aqua-400 hover:bg-aqua-500/10" onclick="showMemberModal(this.closest('.member-card'))">View Repos</button>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/0 to-transparent opacity-60"></div>
+                    <div class="w-20 h-20 mx-auto mb-5 rounded-full bg-aqua-500/10 border border-aqua-500/30 flex items-center justify-center text-2xl font-bold text-aqua-400 group-hover:scale-110 transition-transform relative z-10 shadow-[0_0_15px_rgba(34,211,238,0.2)]">P</div>
+                    <h4 class="text-lg font-bold text-white relative z-10 mb-1">primalkz</h4>
+                    <p class="text-xs text-aqua-400/90 uppercase tracking-wide font-bold relative z-10">Founder</p>
+                    <button class="view-button text-aqua-400 hover:bg-aqua-500/20" onclick="showMemberModal(this.closest('.member-card'))">View Repos</button>
                 </div>
                 
                 <!-- Pero -->
-                <div class="glass-card p-4 rounded-2xl text-center group relative overflow-hidden member-card" 
+                <div class="glass-card p-6 pb-16 rounded-2xl text-center group relative overflow-hidden member-card animate-on-scroll h-full hover:shadow-[0_0_20px_rgba(168,85,247,0.15)] hover:border-purple-500/30" 
                      data-github="PeroSar" 
                      data-role="Generalist"
                      data-bio="Full-stack developer with a passion for clean code and intuitive user experiences.">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-xl font-bold text-purple-400 group-hover:scale-110 transition-transform">P</div>
-                    <h4 class="text-base font-bold text-white">PeroSar</h4>
-                    <p class="text-xs text-purple-400/80 uppercase tracking-wide font-medium mb-2">Generalist</p>
-                    <button class="view-button text-purple-400 hover:bg-purple-500/10" onclick="showMemberModal(this.closest('.member-card'))">View Repos</button>
+                    <div class="w-20 h-20 mx-auto mb-5 rounded-full bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-2xl font-bold text-purple-400 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(168,85,247,0.2)]">P</div>
+                    <h4 class="text-lg font-bold text-white mb-1">PeroSar</h4>
+                    <p class="text-xs text-purple-400/90 uppercase tracking-wide font-bold">Generalist</p>
+                    <button class="view-button text-purple-400 hover:bg-purple-500/20" onclick="showMemberModal(this.closest('.member-card'))">View Repos</button>
                 </div>
 
                 <!-- Dakkshesh -->
-                <div class="glass-card p-4 rounded-2xl text-center group relative overflow-hidden member-card" 
+                <div class="glass-card p-6 pb-16 rounded-2xl text-center group relative overflow-hidden member-card animate-on-scroll h-full hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] hover:border-blue-500/30" 
                      data-github="beakthoven" 
                      data-role="Linux & Systems Engineer"
                      data-bio="Linux engineer and systems specialist with expertise in designing and maintaining robust infrastructure. Passionate about system optimization and automation to create efficient and reliable environments.">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-xl font-bold text-blue-400 group-hover:scale-110 transition-transform">D</div>
-                    <h4 class="text-base font-bold text-white">dakkshesh</h4>
-                    <p class="text-xs text-blue-400/80 uppercase tracking-wide font-medium mb-2">Linux & Systems Engineer</p>
-                    <button class="view-button text-blue-400 hover:bg-blue-500/10" onclick="showMemberModal(this.closest('.member-card'))">View Repos</button>
+                    <div class="w-20 h-20 mx-auto mb-5 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-2xl font-bold text-blue-400 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(59,130,246,0.2)]">D</div>
+                    <h4 class="text-lg font-bold text-white mb-1">dakkshesh</h4>
+                    <p class="text-xs text-blue-400/90 uppercase tracking-wide font-bold">Linux & Systems</p>
+                    <button class="view-button text-blue-400 hover:bg-blue-500/20" onclick="showMemberModal(this.closest('.member-card'))">View Repos</button>
                 </div>
 
                 <!-- DK -->
-                <div class="glass-card p-4 rounded-2xl text-center group relative overflow-hidden member-card" 
+                <div class="glass-card p-6 pb-16 rounded-2xl text-center group relative overflow-hidden member-card animate-on-scroll h-full hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] hover:border-amber-500/30" 
                      data-github="" 
                      data-role="Infra. Engineer"
                      data-bio="Hardware nerd experimenting with IoT and 3D printing.">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-xl font-bold text-amber-400 group-hover:scale-110 transition-transform">D</div>
-                    <h4 class="text-base font-bold text-white">DK</h4>
-                    <p class="text-xs text-amber-400/80 uppercase tracking-wide font-medium mb-2">Infra. Engineer</p>
-                    <button class="view-button text-amber-400 hover:bg-amber-500/10" onclick="showMemberModal(this.closest('.member-card'))">View Bio</button>
+                    <div class="w-20 h-20 mx-auto mb-5 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-2xl font-bold text-amber-400 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(245,158,11,0.2)]">D</div>
+                    <h4 class="text-lg font-bold text-white mb-1">DK</h4>
+                    <p class="text-xs text-amber-400/90 uppercase tracking-wide font-bold">Infra. Engineer</p>
+                    <button class="view-button text-amber-400 hover:bg-amber-500/20" onclick="showMemberModal(this.closest('.member-card'))">View Bio</button>
                 </div>
 
                 <!-- cyberknight777 -->
-                <div class="glass-card p-4 rounded-2xl text-center group relative overflow-hidden member-card" 
+                <div class="glass-card p-6 pb-16 rounded-2xl text-center group relative overflow-hidden member-card animate-on-scroll h-full hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] hover:border-emerald-500/30" 
                      data-github="cyberknight777" 
                      data-role="Linux Developer & System Architect"
                      data-bio="Linux developer and system architect with deep expertise in building and optimizing Linux-based systems. Combines development skills with architectural knowledge to create efficient and secure system designs.">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-xl font-bold text-emerald-400 group-hover:scale-110 transition-transform">C</div>
-                    <h4 class="text-base font-bold text-white">cyberknight777</h4>
-                    <p class="text-xs text-emerald-400/80 uppercase tracking-wide font-medium mb-2">Linux Dev. & System Architect</p>
-                    <button class="view-button text-emerald-400 hover:bg-emerald-500/10" onclick="showMemberModal(this.closest('.member-card'))">View Repos</button>
+                    <div class="w-20 h-20 mx-auto mb-5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-2xl font-bold text-emerald-400 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(16,185,129,0.2)]">C</div>
+                    <h4 class="text-lg font-bold text-white mb-1">cyberknight</h4>
+                    <p class="text-xs text-emerald-400/90 uppercase tracking-wide font-bold">System Architect</p>
+                    <button class="view-button text-emerald-400 hover:bg-emerald-500/20" onclick="showMemberModal(this.closest('.member-card'))">View Repos</button>
                 </div>
 
                 <!-- cybersecbyte -->
-                <div class="glass-card p-4 rounded-2xl text-center group relative overflow-hidden member-card" 
+                <div class="glass-card p-6 pb-16 rounded-2xl text-center group relative overflow-hidden member-card animate-on-scroll h-full hover:shadow-[0_0_20px_rgba(244,63,94,0.15)] hover:border-rose-500/30" 
                      data-github="CyberSecByte" 
                      data-role="Cybersecurity Expert"
                      data-bio="Cybersecurity professional specializing in application security and secure coding practices. Committed to making the web a safer place.">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-xl font-bold text-rose-400 group-hover:scale-110 transition-transform">C</div>
-                    <h4 class="text-base font-bold text-white">cybersecbyte</h4>
-                    <p class="text-xs text-rose-400/80 uppercase tracking-wide font-medium mb-2">Cybersecurity Expert</p>
-                    <button class="view-button text-rose-400 hover:bg-rose-500/10" onclick="showMemberModal(this.closest('.member-card'))">View Repos</button>
+                    <div class="w-20 h-20 mx-auto mb-5 rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-2xl font-bold text-rose-400 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(244,63,94,0.2)]">C</div>
+                    <h4 class="text-lg font-bold text-white mb-1">cybersecbyte</h4>
+                    <p class="text-xs text-rose-400/90 uppercase tracking-wide font-bold">Cybersecurity</p>
+                    <button class="view-button text-rose-400 hover:bg-rose-500/20" onclick="showMemberModal(this.closest('.member-card'))">View Repos</button>
                 </div>
 
                 <!-- h@x -->
-                <div class="glass-card p-4 rounded-2xl text-center group relative overflow-hidden member-card" 
+                <div class="glass-card p-6 pb-16 rounded-2xl text-center group relative overflow-hidden member-card animate-on-scroll h-full hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] hover:border-pink-500/30" 
                      data-role="Security Specialist"
                      data-bio="">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-xl font-bold text-pink-400 group-hover:scale-110 transition-transform">H</div>
-                    <h4 class="text-base font-bold text-white">h@x</h4>
-                    <p class="text-xs text-pink-400/80 uppercase tracking-wide font-medium mb-2">Security Specialist</p>
-                    <a href="https://ch.linkedin.com/in/skuny" target="_blank" class="view-button text-pink-400 hover:bg-pink-500/10 block w-full">View LinkedIn</a>
+                    <div class="w-20 h-20 mx-auto mb-5 rounded-full bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-2xl font-bold text-pink-400 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(236,72,153,0.2)]">H</div>
+                    <h4 class="text-lg font-bold text-white mb-1">h@x</h4>
+                    <p class="text-xs text-pink-400/90 uppercase tracking-wide font-bold">Security Specialist</p>
+                    <a href="https://ch.linkedin.com/in/skuny" target="_blank" class="view-button text-pink-400 hover:bg-pink-500/20 block w-full">View LinkedIn</a>
                 </div>
 
                 <!-- Nikk -->
-                <div class="glass-card p-4 rounded-2xl text-center group relative overflow-hidden">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-xl font-bold text-indigo-400 group-hover:scale-110 transition-transform">N</div>
-                    <h4 class="text-base font-bold text-white">Nikk</h4>
-                    <p class="text-xs text-indigo-400/80 uppercase tracking-wide font-medium">TypeScript Expert</p>
+                <div class="glass-card p-6 pb-16 rounded-2xl text-center group relative overflow-hidden animate-on-scroll h-full hover:shadow-[0_0_20px_rgba(99,102,241,0.15)] hover:border-indigo-500/30">
+                    <div class="w-20 h-20 mx-auto mb-5 rounded-full bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-2xl font-bold text-indigo-400 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(99,102,241,0.2)]">N</div>
+                    <h4 class="text-lg font-bold text-white mb-1">Nikk</h4>
+                    <p class="text-xs text-indigo-400/90 uppercase tracking-wide font-bold">TypeScript Expert</p>
                 </div>
 
                 <!-- mangesh -->
-                <div class="glass-card p-4 rounded-2xl text-center group relative overflow-hidden member-card" 
+                <div class="glass-card p-6 pb-16 rounded-2xl text-center group relative overflow-hidden member-card animate-on-scroll h-full hover:shadow-[0_0_20px_rgba(34,197,94,0.15)] hover:border-green-500/30" 
                      data-github="mngshm" 
                      data-role="Generalist"
                      data-bio="Developer currently working at Frappe. Active in the open source community. Specializes in building scalable web applications and solving complex problems through technology.">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center text-xl font-bold text-green-400 group-hover:scale-110 transition-transform">M</div>
-                    <h4 class="text-base font-bold text-white">mangesh</h4>
-                    <p class="text-xs text-green-400/80 uppercase tracking-wide font-medium mb-2">Generalist</p>
-                    <button class="view-button text-green-400 hover:bg-green-500/10" onclick="showMemberModal(this.closest('.member-card'))">View Repos</button>
+                    <div class="w-20 h-20 mx-auto mb-5 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center text-2xl font-bold text-green-400 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(34,197,94,0.2)]">M</div>
+                    <h4 class="text-lg font-bold text-white mb-1">mangesh</h4>
+                    <p class="text-xs text-green-400/90 uppercase tracking-wide font-bold">Generalist</p>
+                    <button class="view-button text-green-400 hover:bg-green-500/20" onclick="showMemberModal(this.closest('.member-card'))">View Repos</button>
                 </div>
+                
                 <!-- Lelouch -->
-                <div class="glass-card p-4 rounded-2xl text-center group relative overflow-hidden">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-violet-500/10 border border-violet-500/30 flex items-center justify-center text-xl font-bold text-violet-400 group-hover:scale-110 transition-transform">L</div>
-                    <h4 class="text-base font-bold text-white">Lelouch</h4>
-                    <p class="text-xs text-violet-400/80 uppercase tracking-wide font-medium">Software Architect</p>
+                <div class="glass-card p-6 pb-16 rounded-2xl text-center group relative overflow-hidden animate-on-scroll h-full hover:shadow-[0_0_20px_rgba(139,92,246,0.15)] hover:border-violet-500/30">
+                    <div class="w-20 h-20 mx-auto mb-5 rounded-full bg-violet-500/10 border border-violet-500/30 flex items-center justify-center text-2xl font-bold text-violet-400 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(139,92,246,0.2)]">L</div>
+                    <h4 class="text-lg font-bold text-white mb-1">Lelouch</h4>
+                    <p class="text-xs text-violet-400/90 uppercase tracking-wide font-bold">Software Architect</p>
                 </div>
 
                 <!-- Mr. Aqua -->
-                <div class="glass-card p-4 rounded-2xl text-center group relative overflow-hidden member-card"
+                <div class="glass-card p-6 pb-16 rounded-2xl text-center group relative overflow-hidden member-card animate-on-scroll h-full hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:border-cyan-500/30"
                      data-role="Accounts & Finance"
                      data-bio="Dedicated accounts professional and CA aspirant managing the financial operations of the team. Ensures smooth financial processes and compliance while pursuing chartered accountancy.">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-xl font-bold text-cyan-400 group-hover:scale-110 transition-transform">A</div>
-                    <h4 class="text-base font-bold text-white">Mr. Aqua</h4>
-                    <p class="text-xs text-cyan-400/80 uppercase tracking-wide font-medium mb-2">Accounts & Finance</p>
-                    <button class="view-button text-cyan-400 hover:bg-cyan-500/10" onclick="showMemberModal(this.closest('.member-card'))">View Bio</button>
+                    <div class="w-20 h-20 mx-auto mb-5 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-2xl font-bold text-cyan-400 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(6,182,212,0.2)]">A</div>
+                    <h4 class="text-lg font-bold text-white mb-1">Mr. Aqua</h4>
+                    <p class="text-xs text-cyan-400/90 uppercase tracking-wide font-bold">Finance</p>
+                    <button class="view-button text-cyan-400 hover:bg-cyan-500/20" onclick="showMemberModal(this.closest('.member-card'))">View Bio</button>
                 </div>
             </div>
             
-            <div class="mt-16 flex justify-center">
-                <a href="https://t.me/+uVW4wH-v1VpjNzQ9" target="_blank" class="group relative inline-flex items-center px-8 py-3.5 text-base font-medium text-white transition-all duration-200">
-                    <div class="absolute inset-0 rounded-full bg-gradient-to-r from-aqua-500 to-indigo-600 opacity-90 transition-all duration-300 group-hover:opacity-100 group-hover:shadow-[0_0_15px_-3px_rgba(34,211,238,0.4)]"></div>
+            <div class="mt-20 flex justify-center animate-on-scroll">
+                <a href="https://t.me/+uVW4wH-v1VpjNzQ9" target="_blank" class="group relative inline-flex items-center px-10 py-4 text-lg font-bold text-white transition-all duration-200 bg-white/5 rounded-full hover:bg-white/10 overflow-hidden">
+                    <div class="absolute inset-0 rounded-full border border-white/10 group-hover:border-aqua-500/50 transition-colors"></div>
                     <div class="relative flex items-center">
                         <span class="mr-3">Join the Collective</span>
-                        <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                        </svg>
+                        <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform text-aqua-400"></i>
                     </div>
                 </a>
             </div>
         </div>
     </section>
 
+    <!-- Contact Section -->
     <section id="contact" class="pt-24 pb-12">
         <div class="max-w-screen-xl mx-auto px-4 md:px-8">
-            <div class="relative bg-gradient-to-b from-zinc-900 to-black border border-white/10 rounded-[3rem] p-12 md:p-24 text-center overflow-hidden">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-aqua-500/20 blur-[120px] rounded-full"></div>
+            <!-- Animated Border Container -->
+            <div class="relative p-[1px] rounded-[3rem] overflow-hidden group animate-on-scroll">
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-aqua-500/50 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/50 to-transparent translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-1000 ease-in-out delay-500"></div>
                 
-                <h2 class="text-4xl md:text-7xl font-bold text-white mb-6 relative z-10 tracking-tight">Ready to <span class="text-gradient">ascend?</span></h2>
-                <p class="text-zinc-400 text-xl mb-12 max-w-2xl mx-auto relative z-10 font-light">
-                    We are currently selecting partners for the upcoming quarter. If you are building something ambitious, we should talk.
-                </p>
-                
-                <div class="relative z-10 flex flex-col md:flex-row items-center justify-center gap-6">
-                    <a href="mailto:hello@aqua.dev" class="inline-flex items-center justify-center px-8 py-3 text-base md:text-lg font-bold text-black transition-all duration-300 bg-white rounded-full hover:bg-aqua-400 hover:scale-105 hover:shadow-lg hover:shadow-aqua-400/20">
-                        hello@akuatech.dev
-                    </a>
-                    <a href="https://t.me/+uVW4wH-v1VpjNzQ9" target="_blank" class="inline-flex items-center justify-center px-6 py-3 text-base md:text-lg font-medium text-white transition-all duration-300 border border-white/20 rounded-full hover:bg-white/10 group">
-                       Contribute on Telegram
-                    </a>
+                <div class="relative bg-zinc-950/90 backdrop-blur-xl rounded-[3rem] p-12 md:p-24 text-center overflow-hidden border border-white/10">
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-aqua-500/10 blur-[150px] rounded-full pointer-events-none"></div>
+                    
+                    <h2 class="text-5xl md:text-8xl font-black text-white mb-8 relative z-10 tracking-tighter">Ready to <span class="text-gradient">ascend?</span></h2>
+                    <p class="text-zinc-400 text-xl md:text-2xl mb-14 max-w-2xl mx-auto relative z-10 font-light leading-relaxed">
+                        We are currently selecting partners for the upcoming quarter. If you are building something ambitious, we should talk.
+                    </p>
+                    
+                    <div class="relative z-10 flex flex-col md:flex-row items-center justify-center gap-6">
+                        <a href="mailto:hello@aqua.dev" class="group inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-black transition-all duration-300 bg-white rounded-full hover:bg-aqua-400 hover:scale-105 hover:shadow-[0_0_40px_rgba(34,211,238,0.3)]">
+                            <i class="fas fa-envelope mr-3 group-hover:rotate-12 transition-transform"></i>
+                            hello@akuatech.dev
+                        </a>
+                        <a href="https://t.me/+uVW4wH-v1VpjNzQ9" target="_blank" class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white transition-all duration-300 border border-white/20 rounded-full hover:bg-white/10 hover:border-white/40 group">
+                           <i class="fab fa-telegram mr-3 text-xl group-hover:text-aqua-400 transition-colors"></i>
+                           Contribute on Telegram
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <footer class="mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-zinc-600 text-sm">
-                <div class="mb-4 md:mb-0 flex items-center gap-2">
-                    <div class="w-3 h-3 rounded-full bg-aqua-500"></div>
-                    <span class="font-bold text-zinc-300">Akua Tech</span> <i class="far fa-copyright text-xs mx-0"></i> <span id="current-year"></span>
+            <footer class="mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-zinc-500 text-sm gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-3 h-3 rounded-full bg-aqua-500 shadow-[0_0_10px_rgba(34,211,238,0.5)]"></div>
+                    <span class="font-bold text-zinc-300 text-base">Akua Tech</span> 
+                    <span class="text-zinc-600">|</span>
+                    <span>&copy; <span id="current-year"></span></span>
                     <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
                 </div>
-                <div class="flex space-x-8">
-                    <a href="#" class="hover:text-aqua-400 transition">Twitter</a>
-                    <a href="#" class="hover:text-aqua-400 transition">GitHub</a>
-                    <a href="#" class="hover:text-aqua-400 transition">LinkedIn</a>
+                
+                <div class="flex items-center space-x-8">
+                    <a href="#" class="text-zinc-500 hover:text-white transition-colors transform hover:-translate-y-1 duration-200">
+                        <i class="fab fa-x-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-zinc-500 hover:text-white transition-colors transform hover:-translate-y-1 duration-200">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-zinc-500 hover:text-white transition-colors transform hover:-translate-y-1 duration-200">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
                 </div>
+
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex items-center gap-2 text-zinc-500 hover:text-aqua-400 transition-colors group">
+                    Back to top <i class="fas fa-arrow-up group-hover:-translate-y-1 transition-transform"></i>
+                </button>
             </footer>
         </div>
     </section>
 
     <script>
+        // Modal Logic
         const modal = document.getElementById('githubModal');
         const closeModal = document.getElementById('closeModal');
         const modalTitle = document.getElementById('modalTitle');
@@ -777,7 +936,7 @@
             modalBio.textContent = bio || '';
             modalBio.classList.toggle('hidden', !bio);
             
-            reposList.innerHTML = '<div class="text-center py-4 text-zinc-400">Loading repositories...</div>';
+            reposList.innerHTML = '<div class="text-center py-8 text-zinc-500 flex flex-col items-center"><i class="fas fa-circle-notch fa-spin text-2xl mb-2 text-aqua-400"></i><span>Loading data...</span></div>';
             modal.classList.add('active');
             
             if (username) {
@@ -802,17 +961,19 @@
 
                 if (repos.length > 0) {
                     html += `
-                        <div class="mb-8">
-                            <h4 class="text-sm font-semibold text-zinc-400 mb-4">Personal Repositories</h4>
-                            <div class="grid grid-cols-1 gap-3">
+                        <div class="mb-6">
+                            <h4 class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3">Top Repositories</h4>
+                            <div class="grid grid-cols-1 gap-2">
                                 ${repos.map(repo => `
-                                    <a href="${repo.html_url}" target="_blank" class="repo-item block group">
-                                        <div class="font-medium text-white group-hover:text-aqua-400 transition-colors break-words">${repo.name}</div>
-                                        ${repo.description ? `<p class="text-xs text-zinc-400 mt-1 break-words">${repo.description}</p>` : ''}
-                                        <div class="flex items-center mt-1 text-xs" style="color: #71717A">
-                                            <i class="fas fa-star text-xs mr-1"></i>
-                                            <span>${repo.stargazers_count}</span>
+                                    <a href="${repo.html_url}" target="_blank" class="repo-item block group hover:translate-x-1">
+                                        <div class="flex justify-between items-start">
+                                            <div class="font-medium text-white group-hover:text-aqua-400 transition-colors break-words">${repo.name}</div>
+                                            <div class="flex items-center text-xs text-zinc-500">
+                                                <i class="fas fa-star text-amber-400 text-[10px] mr-1"></i>
+                                                <span>${repo.stargazers_count}</span>
+                                            </div>
                                         </div>
+                                        ${repo.description ? `<p class="text-xs text-zinc-400 mt-1 break-words line-clamp-2">${repo.description}</p>` : ''}
                                     </a>
                                 `).join('')}
                             </div>
@@ -821,13 +982,13 @@
 
                 if (orgs.length > 0) {
                     html += `
-                        <div class="mt-8 pt-6 border-t border-white/10">
-                            <h4 class="text-sm font-semibold text-zinc-400 mb-4">Organizations</h4>
-                            <div class="flex flex-wrap gap-3">
+                        <div class="mt-6 pt-6 border-t border-white/10">
+                            <h4 class="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3">Organizations</h4>
+                            <div class="flex flex-wrap gap-2">
                                 ${orgs.map(org => `
-                                    <a href="https://github.com/${org.login}" target="_blank" class="flex items-center px-3 py-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
+                                    <a href="https://github.com/${org.login}" target="_blank" class="flex items-center px-3 py-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors border border-white/5 hover:border-white/20">
                                         <img src="${org.avatar_url}" alt="${org.login}" class="w-5 h-5 rounded-full mr-2">
-                                        <span class="text-sm text-white">${org.login}</span>
+                                        <span class="text-xs text-zinc-300 font-medium">${org.login}</span>
                                     </a>
                                 `).join('')}
                             </div>
@@ -836,7 +997,7 @@
 
                 reposList.innerHTML = html || '<div class="text-center py-4 text-zinc-400">No repositories found.</div>';
             } else {
-                reposList.innerHTML = '<div class="text-center py-0 text-zinc-400"></div>';
+                reposList.innerHTML = '<div class="text-center py-4 text-zinc-500 italic">No GitHub account linked</div>';
             }
         }
         
@@ -844,19 +1005,59 @@
             const footer = document.querySelector('footer');
             if (footer) {
                 const clearCacheBtn = document.createElement('button');
-                clearCacheBtn.textContent = 'Clear GitHub Cache';
-                clearCacheBtn.className = 'text-xs text-zinc-500 hover:text-aqua-400 ml-4';
+                clearCacheBtn.textContent = 'Clear Cache';
+                clearCacheBtn.className = 'text-xs text-zinc-600 hover:text-aqua-400 transition-colors ml-4';
                 clearCacheBtn.onclick = (e) => {
                     e.preventDefault();
                     githubCache.clear();
-                    clearCacheBtn.textContent = 'Cache cleared!';
+                    clearCacheBtn.textContent = 'Cleared!';
                     setTimeout(() => {
-                        clearCacheBtn.textContent = 'Clear GitHub Cache';
+                        clearCacheBtn.textContent = 'Clear Cache';
                     }, 2000);
                 };
-                footer.querySelector('div').appendChild(document.createTextNode(' • '));
                 footer.querySelector('div').appendChild(clearCacheBtn);
             }
+
+            // Intersection Observer for scroll animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Only animate once
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Mobile Menu Logic
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const closeMobileMenuBtn = document.getElementById('close-mobile-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileOverlay = document.getElementById('mobile-overlay');
+
+            function toggleMenu() {
+                mobileMenu.classList.toggle('open');
+                mobileOverlay.classList.toggle('hidden');
+                document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+            }
+
+            mobileMenuBtn.addEventListener('click', toggleMenu);
+            closeMobileMenuBtn.addEventListener('click', toggleMenu);
+            mobileOverlay.addEventListener('click', toggleMenu);
+            
+            // Close menu when clicking links
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', toggleMenu);
+            });
         });
         
         function closeMemberModal() {
@@ -869,14 +1070,6 @@
             }, 300);
         }
         
-        function showModalWithContent(name, role, bio) {
-            modalTitle.textContent = name;
-            modalRole.textContent = role;
-            modalBio.textContent = bio || '';
-            modalBio.classList.toggle('hidden', !bio);
-            reposList.innerHTML = '';
-            modal.classList.add('active');
-        }
         window.showMemberModal = showMemberModal;
         closeModal.addEventListener('click', closeMemberModal);
         modal.addEventListener('click', (e) => {
